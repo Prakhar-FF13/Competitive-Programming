@@ -73,6 +73,11 @@ void insert_at_end(Node **head, Node **tail){
 
 void insert_at_pos_p(Node **head, Node **tail){
     int len = list_length(head);
+    if(len == 0){
+        cout<<"\nList not created, enter an elemt to create list\n";
+        insert_in_front(head, tail);
+        return;
+    }
     cout<<"\nEnter a position between [1,"<<len<<"]: ";
     int p,x;
     cin>>p;
@@ -113,6 +118,43 @@ void insert_at_pos_p(Node **head, Node **tail){
     newNode->next = temp;
 }
 
+void delete_from_front(Node **head, Node **tail){
+    if((*head) == NULL){
+        cout<<"\nList is Empty\n";
+        return;
+    }
+    if((*head)->next == NULL){
+        free((*head));
+        *head = NULL;
+        *tail = NULL;
+        return;
+    }
+    Node *temp=(*head);
+    (*head) = (*head)->next;
+    free(temp);
+}
+
+void delete_from_back(Node **head, Node **tail){
+    if((*head) == NULL){
+        cout<<"\nList is Empty\n";
+        return;
+    }
+    if((*head)->next == NULL){
+        free((*head));
+        *head = NULL;
+        *tail = NULL;
+        return;
+    }
+    Node *temp=(*head);
+    while(temp->next != (*tail)){
+        temp = temp->next;
+    }
+    *tail = temp;
+    temp = temp->next;
+    (*tail)->next = NULL;
+    free(temp);
+}
+
 int main(){
     Node *head=nullptr, *tail=nullptr;
     int ch,x,y,z;
@@ -122,6 +164,8 @@ int main(){
         cout<<"3.   Insert at position p\n";
         cout<<"4.   Display List.\n";
         cout<<"5.   List Length\n";
+        cout<<"6.   Delete from front\n";
+        cout<<"7.   Delete from back\n";
         cout<<"-1.  To Quit.\n";
         cout<<"\n   Enter Your Choice.\n";
         cin>>ch;
@@ -136,6 +180,10 @@ int main(){
                     break;
             case 5: x = list_length(&head);
                     cout<<"\nLength of List: "<<x<<"\n\n";
+                    break;
+            case 6: delete_from_front(&head, &tail);
+                    break;
+            case 7: delete_from_back(&head, &tail);
                     break;
             case -1:cout<<"\n Quitting...\n";
                     break;
