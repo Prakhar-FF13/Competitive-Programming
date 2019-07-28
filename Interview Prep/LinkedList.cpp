@@ -23,6 +23,18 @@ void display_list(Node **head){
     cout<<"\n";
 }
 
+int list_length(Node **head){
+    if((*head) == NULL)
+        return 0;
+    Node * temp = *head;
+    int cnt=0;
+    while(temp != NULL){
+        cnt++;
+        temp = temp->next;
+    }
+    return cnt;
+}
+
 void insert_at_end(Node **head, Node **tail){
     cout<<"Enter the element to be inserted: ";
     int x;
@@ -44,7 +56,7 @@ void insert_at_end(Node **head, Node **tail){
 
 int main(){
     Node *head=nullptr, *tail=nullptr;
-    int ch;
+    int ch,x,y,z;
     while(1){
         cout<<"1.   Insert at the end.\n";
         cout<<"2.   Display List.\n";
@@ -57,7 +69,12 @@ int main(){
                     break;
             case 2: display_list(&head);
                     break;
-            default: break;
+            case 3: x = list_length(&head);
+                    cout<<"\nLength of List: "<<x<<"\n";
+                    break;
+            case -1:cout<<"\n Quitting...\n";
+                    break;
+            default:cout<<"\nWrong Choice\n";
         }
         if(ch==-1)
             break;
