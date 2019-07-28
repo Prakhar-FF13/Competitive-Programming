@@ -155,6 +155,38 @@ void delete_from_back(Node **head, Node **tail){
     free(temp);
 }
 
+void delete_at_pos_p(Node **head, Node **tail){
+    if((*head) == NULL){
+        cout<<"\nList is Empty\n";
+        return;
+    }
+    int len = list_length(head);
+    int p;
+    cout<<"\nEnter position of element to be deleted [1,"<<len<<"]: ";
+    cin>>p;
+    if(p ==0 || p> len){
+        cout<<"\nIncorrect Position..\n";
+        return;
+    }
+    if(p==1){
+        delete_from_front(head, tail);
+        return;
+    }
+    if(p==len){
+        delete_from_back(head, tail);
+        return;
+    }
+    Node *temp=(*head), *delPtr;
+    int cmp=1;
+    while(cmp<p){
+        delPtr = temp;
+        temp = temp->next;
+        cmp++;
+    }
+    delPtr->next = temp->next;
+    free(temp);
+}
+
 int main(){
     Node *head=nullptr, *tail=nullptr;
     int ch,x,y,z;
@@ -166,6 +198,7 @@ int main(){
         cout<<"5.   List Length\n";
         cout<<"6.   Delete from front\n";
         cout<<"7.   Delete from back\n";
+        cout<<"8.   Delete at pos p\n";
         cout<<"-1.  To Quit.\n";
         cout<<"\n   Enter Your Choice.\n";
         cin>>ch;
@@ -184,6 +217,8 @@ int main(){
             case 6: delete_from_front(&head, &tail);
                     break;
             case 7: delete_from_back(&head, &tail);
+                    break;
+            case 8: delete_at_pos_p(&head, &tail);
                     break;
             case -1:cout<<"\n Quitting...\n";
                     break;
