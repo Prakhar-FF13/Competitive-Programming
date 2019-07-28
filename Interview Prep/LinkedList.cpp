@@ -35,8 +35,26 @@ int list_length(Node **head){
     return cnt;
 }
 
+void insert_in_front(Node **head, Node **tail){
+    cout<<"\nEnter the element to be inserted: ";
+    int x;
+    cin>>x;
+    Node *newNode = create_node(x);
+    if(newNode == NULL){
+        cout<<"\nNot able to create node\n";
+        return;
+    }
+    if((*head) == NULL){
+        *head = newNode;
+        *tail = *head;
+        return;
+    }
+    newNode->next = (*head);
+    *head = newNode;
+}
+
 void insert_at_end(Node **head, Node **tail){
-    cout<<"Enter the element to be inserted: ";
+    cout<<"\nEnter the element to be inserted: ";
     int x;
     cin>>x;
     Node *newNode = create_node(x);
@@ -59,17 +77,20 @@ int main(){
     int ch,x,y,z;
     while(1){
         cout<<"1.   Insert at the end.\n";
-        cout<<"2.   Display List.\n";
-        cout<<"3.   List Length\n";
+        cout<<"2.   Insert in the front\n";
+        cout<<"3.   Display List.\n";
+        cout<<"4.   List Length\n";
         cout<<"-1.  To Quit.\n";
         cout<<"\n   Enter Your Choice.\n";
         cin>>ch;
         switch (ch) {
             case 1: insert_at_end(&head, &tail);
                     break;
-            case 2: display_list(&head);
+            case 2: insert_in_front(&head, &tail);
                     break;
-            case 3: x = list_length(&head);
+            case 3: display_list(&head);
+                    break;
+            case 4: x = list_length(&head);
                     cout<<"\nLength of List: "<<x<<"\n";
                     break;
             case -1:cout<<"\n Quitting...\n";
