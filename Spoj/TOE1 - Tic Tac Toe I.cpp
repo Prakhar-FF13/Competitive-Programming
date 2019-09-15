@@ -1,67 +1,94 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <cstring>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <map>
+#include <list>
+
 using namespace std;
-typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
-typedef vector<int> vi;
-typedef vector<pii> vii;
-typedef vector<pll> vll;
-#define rep(i,a,b)		for(int i=a;i<b;i++)
-#define fsi		ios_base::sync_with_stdio(false);cin.tie(0);
-#define RW() 		freopen("read.txt","r",stdin);freopen("write.txt","w",stdout);
-#define MOD 	1000000007
-#define tt() 	int t;cin>>t;while(t--)
-#define pb		push_back
-#define mp		make_pair
-#define ms		memset
-#define all(v)		v.begin(),v.end()
-#define pob		pop_back
-bool wins(vector<string> tic, char pl){
-    rep(i, 0 ,3){
-        if(tic[i][0] == pl && tic[i][1] == pl && tic[i][2] == pl)   return true;
-        if(tic[0][i] == pl && tic[1][i] == pl && tic[2][i] == pl)   return true;
-    }
-    if(tic[0][0] == pl && tic[1][1] == pl && tic[2][2] == pl)       return true;
-    if(tic[0][2] == pl && tic[1][1] == pl && tic[2][0] == pl)       return true;
 
-    return false;
-}
-map<vector<string>, int > posibs;
-void build(vector<string> tic, int chance, int total){
-    bool xwins = wins(tic, 'X');
-    bool owins = wins(tic, 'O');
-    posibs[tic] = 1;
-    if(xwins || owins || total == 9)    return;
-    rep(i, 0, 3)
-        rep(j, 0, 3)
-            if(tic[i][j] == '.'){
-                tic[i][j] = (chance == 0) ? 'X' : 'O';
-                build(tic, 1-chance, total+1);
-                tic[i][j] = '.';
-            }
-}
+string g[3];
 
+bool checkrows(char winner){
+	for(int i=0;i<3;i++){
+		if(g[i][0]==winner&&g[i][1]==winner&&g[i][2]==winner){
+			return true;
+		}
+	}
+	return false;
+}
+bool checkcols(char winner){
+	for(int i=0;i<3;i++){
+		if(g[0][i]==winner&&g[1][i]==winner&&g[2][i]==winner){
+			return true;
+		}
+	}
+	return false;
+}
+bool checkdiagnols(char winner){
+		if(g[0][0]==winner&&g[1][1]==winner&&g[2][2]==winner){
+			return true;
+		}
+		if(g[0][2]==winner&&g[1][1]==winner&&g[2][0]==winner){
+			return true;
+		}
+		return false;
+}
 
 int main(){
-    RW()
-    vector<string> arr;
-    arr.pb("..."); arr.pb("..."); arr.pb("...");
-    build(arr, 0, 0);
-    /*for(auto it = posibs.begin(); it!=posibs.end(); it++){
-        arr = *it;
-        cout<<arr[0]<<"\n"<<arr[1]<<"\n"<<arr[2]<<endl<<endl;
-    }
-    cout<<posibs.size()<<endl;*/
-    //cout<<posibs.size()<<"\n";
-    tt(){
-        arr.clear();
-        string s1,s2,s3;
-        cin>>s1>>s2>>s3;
-        arr.pb(s1); arr.pb(s2); arr.pb(s3);
-        if(posibs[arr])
-            cout<<"yes"<<endl;
-        else
-            cout<<"no"<<endl;
-    }
-    return 0;
+	int n;
+	scanf("%d",&n);
+	while(n--){
+		bool possible=true;
+		for(int i=0;i<3;i++){
+			cin>>g[i];
+		}
+		int xcount=0,ocount=0;
+		for(int i=0;i<3;i++){
+			for(int j=0;j<3;j++){
+				if(g[i][j]=='X'){
+					xcount++;
+					continue;
+				}
+				if(g[i][j]=='O'){
+					ocount++;
+				}
+			}
+		}
+		if(ocount>xcount){
+			possible=false;
+		}
+		if((xcount-ocount)>1){
+			possible=false;
+		}
+		//cout<<xcount<<" "<<ocount<<endl;
+		bool winnerx=(checkrows('X')||checkcols('X')||checkdiagnols('X'));
+		if(winnerx){
+			if((xcount-ocount)!=1){
+				possible=false;
+			}
+		}
+		bool winnero=(checkrows('O')||checkcols('O')||checkdiagnols('O'));
+		if(winnero){
+			if((xcount-ocount)!=0){
+				possible=false;
+			}
+		}
+		if(winnerx==true&&winnero==true){
+			possible=false;
+		}
+		if(possible){
+			printf("yes\n");
+		}
+		else{
+			printf("no\n");
+		}
+		if(n!=0){
+			printf("\n");
+		}
+	}
+	return 0;
 }
