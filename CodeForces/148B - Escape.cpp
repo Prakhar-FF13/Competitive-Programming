@@ -28,6 +28,7 @@ int main(){
         while(princess_dist < c){
             double time_to_catch = princess_dist/(dragon_chasing_speed);
             princess_dist += time_to_catch*vp;
+            // if dragin catches pricness at castle then no bijous are needed hence break;
             if(princess_dist >= c)  break;
             double dragon_goes_back_time = (princess_dist/vd) + f;
             princess_dist += dragon_goes_back_time*vp;
