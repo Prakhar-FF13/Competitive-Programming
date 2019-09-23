@@ -16,3 +16,8 @@ typedef vector<pll> vll;
 #define ms		memset
 #define all(v)		v.begin(),v.end()
 #define pob		pop_back
+
+int main(){
+    
+    return 0;
+}
