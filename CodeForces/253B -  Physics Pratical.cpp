@@ -32,24 +32,18 @@ int main(){
     int dp[n];
     rep(i, 0, n){
         // assume arr[i] is minimum;
-        cout<<i<<" "<<arr[i]<<" : \n";
         int cnt = i;
         int j = lower_bound(arr, arr+n, 2*arr[i])-arr;
         if(j >= n || arr[j] > 2*arr[i]) j--;
-        cout<<"max j :  j-> "<<j<<"   arr[j] -> "<<arr[j];
         cnt += n-j-1;
-        cout<<" "<<cnt<<"\n";
         dp[i] = cnt;
 
         // assume arr[i] is maximum;
         cnt = n-i-1;
         j     = lower_bound(arr, arr+n, arr[i]/2) - arr;
         if( j < 0 || arr[j]*2 < arr[i]) j++;
-        cout<<"min j :  j-> "<<j<<"   arr[j] -> "<<arr[j];
         cnt += j;
-        cout<<" "<<cnt<<"\n";
         dp[i] = min(dp[i], cnt);
-        cout<<"\n****************\n";
     }
     int ans = 1e9;
     rep(i, 0, n){
