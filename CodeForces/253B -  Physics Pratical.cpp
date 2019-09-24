@@ -22,32 +22,30 @@ int main(){
     int n;
     cin>>n;
     int arr[n];
-    rep(i, 0, n)
+    int cnt[5010];
+    int dp[5010];
+    ms(cnt, 0, sizeof(cnt));
+    ms(dp, 0, sizeof(dp));
+    rep(i, 0, n){
         cin>>arr[i];
-    sort(arr, arr+n);
-    rep(i,0,n){
-        cout<<arr[i]<<" ";
+        cnt[arr[i]]++;
     }
-    cout<<endl;
-    int dp[n];
-    rep(i, 0, n){
-        // assume arr[i] is minimum;
-        int cnt = i;
-        int j = lower_bound(arr, arr+n, 2*arr[i])-arr;
-        if(j >= n || arr[j] > 2*arr[i]) j--;
-        cnt += n-j-1;
-        dp[i] = cnt;
-
-        // assume arr[i] is maximum;
-        cnt = n-i-1;
-        j     = lower_bound(arr, arr+n, arr[i]/2) - arr;
-        if( j < 0 || arr[j]*2 < arr[i]) j++;
-        cnt += j;
-        dp[i] = min(dp[i], cnt);
-    }
+    int max_numb = 5005;
+    dp[0] = cnt[0];
+    rep(i,1,max_numb+1)
+        dp[i] = dp[i-1] + cnt[i];
     int ans = 1e9;
-    rep(i, 0, n){
-        ans = min(ans, dp[i]);
+
+    rep(i, 1, max_numb){
+        // i is minimum;
+        if(cnt[i] == 0) continue;
+
+        int to_remove = dp[i-1]; // all smaller than i.
+
+        // also remove all numbers greater than 2*i;
+        int max_i = min(max_numb, (2*i));
+        to_remove += dp[max_numb] - dp[max_i];
+        ans = min(ans, to_remove);
     }
     cout<<ans;
     return 0;
