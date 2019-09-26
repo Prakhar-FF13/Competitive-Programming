@@ -44,6 +44,7 @@ int main(){
             dfs(i);
         }
     }
-    cout<<pow(2, n-conn_comp_count);
+    ll ans = pow(2, , n - conn_comp_count);
+    cout<<ans;
     return 0;
 }
