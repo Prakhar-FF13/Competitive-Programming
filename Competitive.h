@@ -1,4 +1,15 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<cstdio>
+#include<climits>
+#include<sstream>
+#include<vector>
+#include<set>
+#include<map>
+#include<unordered_map>
+#include<unordered_set>
+#include<cmath>
+#include<algorithm>
+
 using namespace std;
 typedef long long ll;
 typedef pair<int,int> pii;
@@ -18,6 +29,5 @@ typedef vector<pll> vll;
 #define pob		pop_back
 
 int main(){
-    
     return 0;
 }
