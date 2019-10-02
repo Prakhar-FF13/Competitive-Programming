@@ -12,6 +12,8 @@
 #include<unordered_set>
 #include<cmath>
 #include<algorithm>
+#include<numeric>
+#include<functional>
 
 using namespace std;
 typedef long long ll;
