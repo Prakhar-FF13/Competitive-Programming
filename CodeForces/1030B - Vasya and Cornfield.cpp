@@ -42,6 +42,7 @@ double area(int x1, int y1, int x2, int y2, int x3, int y3){
     return abs( x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2) )/2.0;
 }
 
+// use area to determine whether a point lies inside or outside.
 bool insideOrOutside(int n, int d, int x, int y){
     double areaRect = area(0, d, d, 0, n-d, n) + area(d, 0, n-d, n, n, n-d); // area of rectangle.
     double area1 = area(0, d, d, 0, x, y);
