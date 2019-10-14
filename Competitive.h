@@ -4,6 +4,7 @@
 #include<climits>
 #include<sstream>
 #include<vector>
+#include<list>
 #include<stack>
 #include<queue>
 #include<set>
