@@ -41,33 +41,43 @@ typedef vector<pdll> vdll;
 #define pob		pop_back
 int n,k;
 vi arr;
-bool possible;
+int dp[10010][110]; // knapsack like DP using upto ith element how many remainders can i get from 0 to k-1
 
-void solve(int num, int ind){
-    if(ind == arr.size()){
-        if(num%k == 0)
-            possible = true;
-        return;
+void solve(){
+    int rem = arr[0]%k;
+    int sign = rem>=0?1:-1;
+    dp[0][rem*sign] = 1*sign;
+    rep(i, 1, n){
+        rep(j, 0, k){
+            if(dp[i-1][j] != 0){ //dp[i-1][j] != 0 means using upto i-1 elements we can generate a remainder of j, add/subtract current element i.e ith element remainder to get remainders which can be generated upto i. if after using all n elements if [n-1][0] is still 0 which would then mean that we have cannot have a sequence which generate a remainder of 0.
+                int remUtpIMinus1 = j*dp[i-1][j];
+                rem = (arr[i]%k + remUtpIMinus1)%k;
+                sign = rem>=0?1:-1;
+                dp[i][rem*sign] = 1*sign;
+                rem = ((-arr[i])%k + remUtpIMinus1)%k;
+                sign = rem>=0?1:-1;
+                dp[i][rem*sign] = 1*sign;
+            }
+        }
     }
-    solve(num + arr[ind], ind+1);
-    solve(num - arr[ind], ind+1);
 }
-
 int main(){
+    RW()
     tt(){
         cin>>n>>k;
-        possible = false;
         arr.clear();
         rep(i, 0, n){
             int x;
             cin>>x;
             arr.pb(x);
         }
-        solve(arr[0], 1);
-        if(possible)
+        ms(dp, 0, sizeof(dp));
+        solve();
+        if(dp[n-1][0] != 0)
             cout<<"Divisible"<<endl;
         else
             cout<<"Not divisible"<<endl;
+
     }
     return 0;
 }
