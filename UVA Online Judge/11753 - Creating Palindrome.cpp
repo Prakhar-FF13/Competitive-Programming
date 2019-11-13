@@ -42,8 +42,8 @@ typedef vector<pdll> vdll;
 #define pob		pop_back
 int n,k;
 vl arr;
-int dp[10005][10005];
-void solve(){
+/*int dp[10005][10005];
+void solveDP(){
     rep(i,1,n){
         if(arr[i] != arr[i+1]) // length 2 palindrome is not present create it by adding an element.
             dp[i][i+1] = 1;
@@ -64,7 +64,20 @@ void solve(){
             }
         }
     }
+}*/
+
+// backtracking prune when cnt > k.
+int solve2(int i, int j, int cnt){
+    if(i >= j)
+        return cnt;
+    if(cnt > k)
+        return cnt;
+    if(arr[i] == arr[j])
+        return solve2(i+1, j-1, cnt);
+    else
+        return min(solve2(i+1, j, cnt+1), solve2(i, j-1, cnt+1));
 }
+
 int main(){
     RW()
     int x = 1;
@@ -75,11 +88,12 @@ int main(){
         arr.assign(n+3, 0);
         rep(i, 1, n+1)
             cin>>arr[i];
-        ms(dp, 0, sizeof(dp));
+        /*ms(dp, 0, sizeof(dp));
         if(n > 1)
-            solve();
-        int ans = dp[1][n];
+            solveDP();
+        int ans = dp[1][n];*/
         cout<<"Case "<<x++<<": ";
+        int ans = solve2(1, n, 0);
         if(ans == 0)
             cout<<"Too easy"<<endl;
         else if(ans > k)
