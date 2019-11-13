@@ -22,6 +22,7 @@ typedef long long ll;
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
 typedef vector<int> vi;
+typedef vector<ll> vl;
 typedef vector<double> vd;
 typedef vector<pii> vii;
 typedef vector<pll> vll;
