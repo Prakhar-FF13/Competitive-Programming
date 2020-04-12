@@ -45,5 +45,22 @@ typedef vector<pdll> vdll;
 #define pob		        pop_back
 
 int main(){
+  int n;
+  cin>>n;
+  int arr[n], arr2[n];
+  rep(i, 0, n) {
+    cin>>arr[i];
+    arr2[i] = arr[i];
+  }
+  sort(arr2, arr2+n);
+  int cnt = 0;
+  rep(i, 0, n) {
+    if(arr[i] != arr2[i]) cnt++;
+  }
+  if (cnt <= 2) {
+    cout<<"YES";
+  }else {
+    cout<<"NO";
+  }
   return 0;
 }
