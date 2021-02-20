@@ -73,8 +73,6 @@ int main () {
                 }
             }
 
-            //cout<<str[i]<<" "<<ind<<endl;
-
             if (ind == -1) {
                 stack<char> s;
                 s.push(str[i]);
