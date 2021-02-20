@@ -49,10 +49,7 @@ int main () {
     while(cin>>str) {
         if (str == "end")   break;
         vector<stack<char> > arr;
-        int last[26];
         int n = str.length();
-
-        rep(i, 0, n)    last[getInt(str[i])] = i;
 
         rep(i, 0, n) {
             int val = getInt(str[i]), ind = -1, mindiff = 1e9+7;
