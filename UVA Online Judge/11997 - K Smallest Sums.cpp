@@ -46,27 +46,26 @@ int main () {
         vector<int> kSums(n);   // contains n least sums
 
         rep(l, 0, n) {
-            priority_queue<int, vector<int>, greater<int> > pq;
-
-            rep(i, 0, n) {
-                if (l == 0) // only one array then n leastsums are array elements itself.
-                    cin>>kSums[i];
-                else {
-                    // generate cummulative least n sums.
-                    // kSums + elements of new array. take minimum sums.
-                    int x;
-                    cin>>x;
-                    rep(j, 0, n)
-                        pq.push(kSums[j] + x);  // push all n^2 pairs.
-                }
-            }
-            if (l == 0) continue;
+            // if only one array then k least sums are array elements itself.
+            if (l== 0) {rep(i, 0, n)    cin>>kSums[i]; continue;}
             
-            int x = 0;    // take n smallest sums.
-            while(x < n) {
-                kSums[x] = pq.top();
+            // now we try to generate all n^2 pairs and queue to keep only k smallest.
+            priority_queue<int> pq;
+            vector<int> temp(n); // stores 2nd, 3rd...nth etc array elements.
+
+            rep(i, 0, n)    {cin>>temp[i];  pq.push(temp[i] + kSums[0]);}
+
+            rep(i, 0, n)
+                rep(j, 1, n)
+                    if (pq.top() > temp[i] + kSums[j]) { // out of all n^2 pairs keep only k smallest.
+                        pq.pop();   // remove bigger sum
+                        pq.push(temp[i] + kSums[j]); // add smaller sum.
+                    }
+            
+            int x = n-1;
+            while(pq.size()) {
+                kSums[x--] = pq.top();
                 pq.pop();
-                x++;
             }
         }
         cout<<kSums[0];
