@@ -47,20 +47,22 @@ int main () {
 
         rep(l, 0, n) {
             // if only one array then k least sums are array elements itself.
-            if (l== 0) {rep(i, 0, n)    cin>>kSums[i]; continue;}
+            if (l== 0) {rep(i, 0, n)    cin>>kSums[i]; sort(all(kSums)); continue;}
             
             // now we try to generate all n^2 pairs and queue to keep only k smallest.
             priority_queue<int> pq;
             vector<int> temp(n); // stores 2nd, 3rd...nth etc array elements.
 
             rep(i, 0, n)    {cin>>temp[i];  pq.push(temp[i] + kSums[0]);}
+            sort(all(temp));
 
             rep(i, 0, n)
                 rep(j, 1, n)
                     if (pq.top() > temp[i] + kSums[j]) { // out of all n^2 pairs keep only k smallest.
                         pq.pop();   // remove bigger sum
                         pq.push(temp[i] + kSums[j]); // add smaller sum.
-                    }
+                    } else // since array is sorted if previous element sum is greater than next element sum will for sure be greater, so ignore.
+                        break;
             
             int x = n-1;
             while(pq.size()) {
