@@ -57,6 +57,8 @@ int main () {
             cin>>x;
             if (s.find(x) != s.end())   s.erase(s.find(x)), removed++;
         }
+        // ans = elements which are in list 1 but not in list 2 = s.size() i.e elements in set.
+        // also add remaining elements in list 2 i.e elements that are in list 2 but not in list 1 i.e m - removed(common)
         ans += s.size() + (m - removed);
         cout<<ans<<endl;
     }
