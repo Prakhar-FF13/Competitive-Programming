@@ -32,6 +32,7 @@ typedef vector<pdii> vdii;
 typedef vector<pdll> vdll;
 #define rep(i,a,b)		for(int i=a;i<b;i++)
 #define rrep(i,a,b)   for(int i=a;i>b;i--)
+#define repit(a)      for(auto it = a.begin(); it != a.end(); it++)
 #define fsi		        ios_base::sync_with_stdio(false);cin.tie(0);
 #define RW() 		    freopen("read.txt","r",stdin);freopen("write.txt","w",stdout);
 #define MOD 	        1000000007
