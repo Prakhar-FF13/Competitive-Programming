@@ -117,10 +117,13 @@ int main () {
     vector<int> arr(n);
     rep(i, 0, n)    cin>>arr[i];
     ST sgt(n, arr);
+    int query = 1;
+    vector<int> inds;
+    char type[100], nums[10000];
     while(q--) {
         string str;
         cin>>str;
-        char type[100], nums[10000];
+
         sscanf(str.c_str(), "%[^(]s", type);
 
         if (string(type) == "query") {
@@ -129,22 +132,26 @@ int main () {
             sscanf(str.c_str(), "shift(%[^)]s", nums);
         }
         
-        vector<int> inds;
+        inds.clear();
         string x = string(nums);
+
         for(int i = 0; i < x.size(); ) {
             string temp = "";
-            while(x[i] != ',')
+            while(x[i] != ',' && i < x.size())  {
                 temp += x[i++];
+            }
             i++;
-            inds.pb(stoi(temp) - 1);
+            inds.pb((stoi(temp)) - 1);
         }
+
 
         if (string(type) == "query") {
             cout<<sgt.query(inds[0], inds[1])<<endl;
         } else {
             int f = sgt.A[inds[0]];
-            for(int i = 0; i < inds.size() - 1 ; i++)
-                sgt.update(inds[i], inds[i], arr[inds[i+1]]);
+            for(int i = 0; i < inds.size() - 1 ; i++)   {
+                sgt.update(inds[i], inds[i], sgt.A[inds[i+1]]);
+            }
 
             sgt.update(inds[inds.size()-1], inds[inds.size()-1], f);
         }
