@@ -1,3 +1,7 @@
+/*
+    Tags - Extremely Good Problem - Recursion + DP.
+*/
+
 #include<iostream>
 #include<cstdio>
 #include<string.h>
@@ -81,14 +85,6 @@ int check(int h, int len) {
             j++;
         }
     }
-
-    // for(int i = 0; i <= len; i++)
-    //     cout<<tmp[i]<<" ";
-    // cout<<endl;
-
-    // for(int i =0 ; i < 10; i++)
-    //     cout<<checkSequence[i]<<" ";
-    // cout<<endl;
 
     // check what is max sequence formed.
     int j = 1;
