@@ -52,8 +52,9 @@ typedef vector<pdll> vdll;
 
 // *****************
 // TLE Code.
-// Optimized code below this code.
+// Optimized code below this main function
 // ******************
+/*
 int main () {
     RW()
     fsi
@@ -108,5 +109,40 @@ int main () {
         cout<<ans<<endl;
     }
 
+    return 0;
+} */
+
+int main () {
+    RW()
+    fsi
+    int n;
+    while(cin>>n) {
+        vi arr(n), rarr(n);
+        rep(i, 0, n)    {cin>>arr[i]; rarr[i] = arr[i];}
+        reverse(all(rarr));
+        vi L(n), R(n), IS(n), DS(n);
+        int k = 0, ans = 0;
+        rep(i,0,n){
+            int position = lower_bound(L.begin(), L.begin() + k, arr[i]) - L.begin();
+
+            L[position] = arr[i];
+            IS[i] = position+1;
+
+            if (position == k)  k = position+1;
+        }
+        k=0;
+        rep(i,0,n){
+            int position = lower_bound(R.begin(), R.begin() + k, rarr[i]) - R.begin();
+
+            R[position] = rarr[i];
+            DS[i] = position+1;
+
+            if (position == k)  k = position+1;
+        }
+        rep(i, 0, n) {
+            ans = max(ans, (2*min(DS[i], IS[n-1-i])) - 1);
+        }
+        cout<<ans<<endl;
+    }
     return 0;
 }
