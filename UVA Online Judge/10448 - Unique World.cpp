@@ -136,11 +136,6 @@ int main()
       int id1, id2, reqC;
       cin >> id1 >> id2 >> reqC;
       bfs(id1, id2);
-      // rep(i, 0, costToTarget.size())
-      // {
-      //   cout << costToTarget[i] << " ";
-      // }
-      // cout << endl;
       int cost = 0;
       cost = accumulate(all(costToTarget), cost);
       if (reqC < cost)
