@@ -91,7 +91,7 @@ void bfs(int s, int t)
   }
 }
 
-ll ccDp[1000001][52];
+ll ccDp[100001][52];
 
 ll coinChangeEvenTimes(int idx, int w)
 {
@@ -102,13 +102,10 @@ ll coinChangeEvenTimes(int idx, int w)
   if (ccDp[w][idx] != 1e9)
     return ccDp[w][idx];
 
-  ll ans = 1e9;
-  for (int i = 0; costToTarget[idx] * i <= w; i += 2)
-  {
-    ans = min(coinChangeEvenTimes(idx + 1, w - (costToTarget[idx] * i)) + i, ans);
-  }
-
-  return ccDp[w][idx] = ans;
+  return ccDp[w][idx] = min(
+             coinChangeEvenTimes(idx + 1, w - costToTarget[idx]) + 1,
+             min(coinChangeEvenTimes(idx + 1, w),
+                 coinChangeEvenTimes(idx, w - costToTarget[idx]) + 1));
 }
 
 int main()
@@ -146,17 +143,21 @@ int main()
       {
         cout << "Yes " << costToTarget.size() << endl;
       }
+      else if ((reqC - cost) % 2 == 1)
+      {
+        cout << "No\n";
+      }
       else
       {
-        rep(x, 0, 1000001)
-            rep(idx, 0, 52)
+        rep(x, 0, ((reqC - cost) / 2) + 1)
+            rep(idx, 0, n + 1)
                 ccDp[x][idx] = 1e9;
-        int times = coinChangeEvenTimes(1, reqC - cost);
+        int times = coinChangeEvenTimes(1, (reqC - cost) / 2);
         if (times == 1e9)
           cout << "No\n";
         else
         {
-          times = times + costToTarget.size();
+          times = times * 2 + costToTarget.size();
           cout << "Yes " << times << endl;
         }
       }
