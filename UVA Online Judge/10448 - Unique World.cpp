@@ -52,113 +52,162 @@ typedef vector<pdll> vdll;
 #define all(v) v.begin(), v.end()
 #define pob pop_back
 
-unordered_map<int, vii> g;
-int n, m;
+#define inf (int)1e9
+
 int costMat[52][52];
-vector<int> parent;
+int floydCost[52][52];
+int pathMat[52][52];
+int dp[52][100001];
+int n, m, k, N;
 vector<int> costToTarget;
 
-void bfs(int s, int t)
+void initialize()
 {
-  queue<int> q;
-  parent.clear();
-  costToTarget.clear();
-  parent.assign(n + 1, -1);
-  vi visited;
-  visited.assign(n + 1, 0);
-  q.push(s);
-  while (!q.empty())
+  rep(i, 0, 52)
   {
-    int top = q.front();
-    q.pop();
-    visited[top] = 1;
-    for (int i = 0; i < g[top].size(); i++)
+    rep(j, 0, 52)
     {
-      pii neigh = g[top][i];
-      if (visited[neigh.first] == 0)
-      {
-        parent[neigh.first] = top;
-        q.push(neigh.first);
-      }
-      if (neigh.first == t)
-        break;
+      costMat[i][j] = inf;
+      floydCost[i][j] = inf;
+      pathMat[i][j] = inf;
     }
   }
-  while (parent[t] != -1)
+  rep(i, 0, 52)
   {
-    costToTarget.pb(costMat[t][parent[t]]);
-    t = parent[t];
+    costMat[i][i] = 0;
+    floydCost[i][i] = 0;
+    pathMat[i][i] = i;
   }
 }
 
-ll ccDp[100001][52];
-
-ll coinChangeEvenTimes(int idx, int w)
+void floydWarshall()
 {
-  if (w == 0)
-    return 0;
-  if (w < 0 || idx >= costToTarget.size())
-    return 1e9;
-  if (ccDp[w][idx] != 1e9)
-    return ccDp[w][idx];
+  rep(k, 1, n + 1)
+  {
+    rep(i, 1, n + 1)
+    {
+      rep(j, 1, n + 1)
+      {
+        if (floydCost[i][k] == inf || floydCost[k][j] == inf)
+        {
+          continue;
+        }
+        if (floydCost[i][k] + floydCost[k][j] < floydCost[i][j])
+        {
+          floydCost[i][j] = floydCost[i][k] + floydCost[k][j];
+          pathMat[i][j] = pathMat[i][k];
+        }
+      }
+    }
+  }
+}
 
-  return ccDp[w][idx] = min(
-             coinChangeEvenTimes(idx + 1, w - costToTarget[idx]) + 1,
-             min(coinChangeEvenTimes(idx + 1, w),
-                 coinChangeEvenTimes(idx, w - costToTarget[idx]) + 1));
+vector<int> getNodesInPath(int s, int t)
+{
+  vector<int> path;
+  if (pathMat[s][t] == inf)
+    return path;
+
+  path.pb(s);
+  while (s != t)
+  {
+    s = pathMat[s][t];
+    path.pb(s);
+  }
+
+  return path;
+}
+
+vector<int> getCostInPath(vector<int> &x)
+{
+  vector<int> cost;
+  for (int i = x.size() - 2; i >= 0; i--)
+  {
+    cost.pb(costMat[x[i]][x[i + 1]]);
+  }
+  return cost;
+}
+
+int coinChange(int idx, int w)
+{
+  if (idx >= costToTarget.size() || w < 0)
+  {
+    return inf;
+  }
+  if (w == 0)
+  {
+    return 0;
+  }
+  if (dp[idx][w] != inf)
+  {
+    return dp[idx][w];
+  }
+
+  return dp[idx][w] = min(coinChange(idx, w - costToTarget[idx]) + 1,
+                          min(coinChange(idx + 1, w - costToTarget[idx]) + 1,
+                              coinChange(idx + 1, w)));
 }
 
 int main()
 {
-  int N;
   cin >> N;
   while (N--)
   {
     cin >> n >> m;
-    g.clear();
-    ms(costMat, (int)1e9, sizeof(costMat));
+    initialize();
     rep(i, 0, m)
     {
       int id1, id2, c;
       cin >> id1 >> id2 >> c;
-      g[id1].pb(mp(id2, c));
-      g[id2].pb(mp(id1, c));
       costMat[id1][id2] = c;
       costMat[id2][id1] = c;
+      pathMat[id1][id2] = id2;
+      pathMat[id2][id1] = id1;
+      floydCost[id1][id2] = 1;
+      floydCost[id2][id1] = 1;
     }
-    int k;
+    floydWarshall();
     cin >> k;
-    while (k--)
+    rep(i, 0, k)
     {
-      int id1, id2, reqC;
-      cin >> id1 >> id2 >> reqC;
-      bfs(id1, id2);
-      int cost = 0;
-      cost = accumulate(all(costToTarget), cost);
-      if (reqC < cost)
+      int id1, id2, c;
+      cin >> id1 >> id2 >> c;
+      costToTarget = getNodesInPath(id1, id2);
+      if (costToTarget.size() == 0)
       {
-        cout << "No\n";
+        cout << "No" << endl;
+        continue;
       }
-      else if (reqC == cost)
+      costToTarget = getCostInPath(costToTarget);
+      int sum = 0;
+      sum = accumulate(all(costToTarget), sum);
+      if (sum > c || ((c - sum) % 2 == 1))
+      {
+        cout << "No" << endl;
+      }
+      else if (sum == c)
       {
         cout << "Yes " << costToTarget.size() << endl;
       }
-      else if ((reqC - cost) % 2 == 1)
-      {
-        cout << "No\n";
-      }
       else
       {
-        rep(x, 0, ((reqC - cost) / 2) + 1)
-            rep(idx, 0, n + 1)
-                ccDp[x][idx] = 1e9;
-        int times = coinChangeEvenTimes(1, (reqC - cost) / 2);
-        if (times == 1e9)
-          cout << "No\n";
+        c -= sum;
+        rep(i, 0, n + 1)
+        {
+          rep(j, 0, (c / 2) + 1)
+          {
+            dp[i][j] = inf;
+          }
+        }
+
+        int times = coinChange(1, c / 2);
+        if (times == inf)
+        {
+          cout << "No" << endl;
+        }
         else
         {
-          times = times * 2 + costToTarget.size();
-          cout << "Yes " << times << endl;
+          cout << "Yes " << times * 2 + costToTarget.size() << endl;
         }
       }
     }
