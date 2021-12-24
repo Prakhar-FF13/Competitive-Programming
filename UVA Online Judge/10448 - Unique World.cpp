@@ -71,9 +71,6 @@ void initialize()
       floydCost[i][j] = inf;
       pathMat[i][j] = inf;
     }
-  }
-  rep(i, 0, 52)
-  {
     costMat[i][i] = 0;
     floydCost[i][i] = 0;
     pathMat[i][i] = i;
@@ -132,7 +129,7 @@ int coinChange(int idx, int w)
 {
   if (idx >= costToTarget.size() || w < 0)
   {
-    return inf;
+    return inf + 1;
   }
   if (w == 0)
   {
@@ -168,7 +165,7 @@ int main()
     }
     floydWarshall();
     cin >> k;
-    rep(i, 0, k)
+    rep(pqr, 0, k)
     {
       int id1, id2, c;
       cin >> id1 >> id2 >> c;
@@ -201,7 +198,7 @@ int main()
         }
 
         int times = coinChange(1, c / 2);
-        if (times == inf)
+        if (times >= inf)
         {
           cout << "No" << endl;
         }
