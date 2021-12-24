@@ -208,7 +208,10 @@ int main()
         }
       }
     }
-    cout << endl;
+    if (N)
+    {
+      cout << endl;
+    }
   }
   return 0;
 }
