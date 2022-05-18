@@ -58,55 +58,36 @@ typedef vector<pdll> vdll;
 
 int n, m;
 vi g[int(1e5) + 5];
-vi parent;
+vi childToFollow;
 vi dist;
+vi visited;
 
-void dijsktra()
+void dfs(int u)
 {
-  set<pii> pq;
-  dist[1] = 0;
-  rep(i, 1, n + 1)
-      pq.insert(mp(dist[i], i));
-  while (!pq.empty())
+  visited[u] = 1;
+  if (u == n)
   {
-    pii z = *pq.begin();
-    int u = z.second;
-    int d = z.first;
-    pq.erase(pq.begin());
-    if (dist[u] < d || d == int(1e9))
-      continue;
-    rep(i, 0, g[u].size())
-    {
-      int v = g[u][i];
-      int w = -1;
-      if (d + w > dist[v])
-        continue;
-      pq.erase(pq.find(mp(dist[v], v)));
-      dist[v] = d + w;
-      parent[v] = u;
-      pq.insert(mp(dist[v], v));
-    }
-  }
-  if (dist[n] == int(1e9))
-  {
-    cout << "IMPOSSIBLE";
+    dist[n] = 0;
     return;
   }
-  int x = n;
-  vi path;
-  while (x != -1)
+  rep(i, 0, g[u].size())
   {
-    path.pb(x);
-    x = parent[x];
+    int v = g[u][i];
+    if (visited[v] == 0)
+      dfs(v);
+    if (dist[v] == -1)
+      continue;
+    if (1 + dist[v] > dist[u])
+    {
+      dist[u] = 1 + dist[v];
+      childToFollow[u] = v;
+    }
   }
-  reverse(all(path));
-  cout << path.size() << endl;
-  rep(i, 0, path.size()) cout << path[i] << " ";
 }
 
 int main()
 {
-  RW();
+  // RW();
   cin >> n >> m;
   rep(i, 0, m)
   {
@@ -114,8 +95,24 @@ int main()
     cin >> a >> b;
     g[a].pb(b);
   }
-  dist.assign(n + 3, int(1e9));
-  parent.assign(n + 3, -1);
-  dijsktra();
+  dist.assign(n + 3, -1);
+  childToFollow.assign(n + 3, -1);
+  visited.assign(n + 3, 0);
+  dfs(1);
+  if (dist[n] == -1)
+  {
+    cout << "IMPOSSIBLE";
+    return 0;
+  }
+  int x = 1;
+  vi path;
+  while (x != n)
+  {
+    path.pb(x);
+    x = childToFollow[x];
+  }
+  cout << path.size() + 1 << endl;
+  rep(i, 0, path.size()) cout << path[i] << " ";
+  cout << n;
   return 0;
 }
