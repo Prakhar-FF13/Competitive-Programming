@@ -79,23 +79,19 @@ int main()
     else
     {
       ll ans = 1;
-      bool qIsPrime = true;
       for (ll i = 2; i * i <= q; i++)
       {
         if (q % i == 0)
         {
-          qIsPrime = false;
           ll tmp = p;
           while (tmp % i == 0 && tmp % q == 0)
             tmp /= i;
           ans = max(ans, tmp);
-          tmp = p;
-          while (tmp % (q / i) == 0 && tmp % q == 0)
-            tmp /= q / i;
-          ans = max(ans, tmp);
+          while (q % i == 0)
+            q /= i;
         }
       }
-      if (qIsPrime)
+      if (q > 1)
       {
         ll tmp = p;
         while (tmp % q == 0)
